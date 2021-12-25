@@ -1,7 +1,7 @@
 import serial
 import time
 #seleccion puerto para comandos AT
-ser = serial.Serial('/dev/ttyUSB2',115200)
+ser = serial.Serial('/dev/ttyTHS1',115200)
 ser.flushInput()
 rec_buff = ''
 #funcion para enviar comandos AT
