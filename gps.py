@@ -42,6 +42,7 @@ def get_gps_position():
 #Organiza la trama gps por datos
 def gps_data():
     trama_1 = get_gps_position()
+    print(trama_1)
     trama = trama_1.split(",")
     fecha_s = str(trama[4])
     temp_s = str(trama[5])
