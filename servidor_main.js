@@ -15,7 +15,6 @@ var ac_mysql = require("./ac_mysql");//se require el modulo ac_mysql que es un m
 se crea la funcion servidor, esta contiene el inicio del servidor en el puerto 1337 y algunas de sus acciones
 */
 function servidor (){
-  var registro = {};
   net.createServer(function(socket) {
     socket.name = socket.remoteAddress + ":" + socket.remotePort; //a socket le define el atributo name
     //socket.write("Welcome " + socket.name + " ;\n"); //le regresa al cliente por medio del metodo write un mensaje
@@ -23,7 +22,6 @@ function servidor (){
     //a continuacion se activa el socket para recibir los datos enviados del cliente y se crea una funcion para manejar los datos que lleguen del cliente.
     socket.on('data', function(data){
       console.log(socket.name + ': ' + data);//escribe en la terminal del servidor el mensaje 
-      registro.code = data;
       ac_mysql.mysql_acceso(data, socket);//se llama del modulo ac_mysql el metodo mysql_acceso.
     });
     //se define una funcion para cuando el cliente se desconete

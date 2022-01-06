@@ -1,13 +1,18 @@
 import serial
 import time
 #seleccion puerto para comandos AT
-ser = serial.Serial('/dev/ttyTHS1',115200)
+puerto1 = '/dev/ttyUSB2'
+puerto2 = '/dev/ttyTHS1'
+ser = serial.Serial(puerto1,115200)
 ser.flushInput()
 rec_buff = ''
-#funcion para enviar comandos AT
-def send_at(command,back,timeout):
+def clean_buffer():
     ser.flushInput()
     ser.flushOutput()
+    ser.flush()
+#funcion para enviar comandos AT
+def send_at(command,back,timeout):
+    clean_buffer()
     rec_buff = ''
     ser.write((command+'\r\n').encode())
     time.sleep(timeout)
@@ -16,20 +21,17 @@ def send_at(command,back,timeout):
         rec_buff = ser.read(ser.inWaiting())
     if rec_buff != '':
         if back not in rec_buff.decode():
-            print(command + ' ERROR')
-            print(command + ' back:\t' + rec_buff.decode())
-            ser.flushInput()
-            ser.flushOutput()
-            return "command error"
+            #print(command + ' ERROR')
+            #print(command + ' back:\t' + rec_buff.decode())
+            clean_buffer()
+            return "Back: command error"
         else: 
             result = rec_buff.decode()
-            ser.flushInput()
-            ser.flushOutput()
+            clean_buffer()
             return result
     else:
         print('Device is not connected')
-        ser.flushInput()
-        ser.flushOutput()
+        clean_buffer()
         return "error"
 def apagado():
     if ser != None:

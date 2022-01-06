@@ -7,6 +7,7 @@ import servidor
 import json
 #variables y listas globales
 Port = '1337'
+ServerIP = '54.209.236.227'
 #conexion base de datos mysql
 mydb = mysql.connector.connect(
   host="localhost",
@@ -29,8 +30,8 @@ try:
         mydb.commit()
         json_tr = {"lat": inf_gps["lat"], "log": inf_gps["log"], "date": inf_gps["date"], "time": inf_gps["time"], "pasajero": 60}        
         lng_json_tr = len(json.dumps(json_tr))
-        print(json_tr)
-        servidor.envio(json_tr, lng_json_tr)
+        if servidor.testing_server():
+            servidor.envio(json_tr, lng_json_tr)
 except KeyboardInterrupt:
     puerto.apagado()
     mydb.close()

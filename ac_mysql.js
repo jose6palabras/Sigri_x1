@@ -7,7 +7,6 @@ regresa el mensaje "usuario no registrado/. codigo erroneo". Si el usuario está
 regresara, el nombre del usuario, el perfil del usuario, y saldo actual.
 mysql_acceso registrara en la base de datos el saldo anterior y el descuento por el viaje realizado.
 */
-
 var mysql = require("mysql");
 var net = require('net');
 /*esta funcion recibe data y socket*/
@@ -30,19 +29,21 @@ function mysql_acceso (data, socket){
     console.log("Connection established with " + DataBase + " -> " + table);
   });
   //var key = '{"lat": "7654", "log": "36664", "date": "2023-04-12", "time": "19:19:00", "pasajero": 12}';
-  var key = JSON.parse(data);  
- 
-  var query = "INSERT INTO data_x1 (lat, log, date, time, pasajeros) VALUES ("+key.lat+", "+key.log+", '"+key.date+"', '"+key.time+"', "+key.pasajero+")";
-  mysql_connection.query(query, function(err, result){
-    if (err){
-       throw (err);
-       console.log("Error \n");
-    }
-    else{
-      console.log("registro exitoso");
-    }
-  });
- 
+  try{
+    var key = JSON.parse(data);
+    var query = "INSERT INTO data_x1 (lat, log, date, time, pasajeros) VALUES ("+key.lat+", "+key.log+", '"+key.date+"', '"+key.time+"', "+key.pasajero+")";
+    mysql_connection.query(query, function(err, result){
+      if (err){
+        throw (err);
+        console.log("Error \n");
+      }
+      else{
+        console.log("registro exitoso");
+      }
+    });
+  }catch(error){
+    console.log("dato erroneo")
+  } 
   function salida(){
     mysql_connection.end(function(err){
       if (err){
